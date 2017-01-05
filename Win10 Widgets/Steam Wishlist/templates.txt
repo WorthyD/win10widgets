@@ -1,0 +1,73 @@
+[MeasureItem$0Title]
+Measure=Plugin
+Plugin=WebParser
+Url=[MeasureSite]
+RegExp="(?siU)#Title#"
+StringIndex=<% $rowNumOne + 1 %>
+StringIndex2=1
+Substitute=#Sub#
+
+[MeasureItem$0Link]
+Measure=Plugin
+Plugin=WebParser
+Url=[MeasureSite]
+RegExp="(?siU)#Link#"
+StringIndex=<% $rowNumOne + 1 %>
+StringIndex2=1
+
+[MeasureItem$0Percent]
+Measure=Plugin
+Plugin=WebParser
+Url=[MeasureSite]
+RegExp="(?siU)#Percent#"
+StringIndex=<% $rowNumOne + 1 %>
+StringIndex2=1
+IfEqualValue=0
+IfEqualAction=[!HideMeter MeterItem$0Right][!SetOption MeterItem$0Title ToolTipHidden 1][!Redraw]
+IfAboveValue=0
+IfAboveAction=[!ShowMeter MeterItem$0Right][!SetOption MeterItem$0Title ToolTipHidden 0][!Redraw]
+
+[Prc$0]
+Measure=Calc
+Formula=MeasureItem$0Percent/100
+Group=Calc
+Disabled=1
+
+[MeasureItem$0Price]
+Measure=Plugin
+Plugin=WebParser
+Url=[MeasureSite]
+RegExp="(?siU)#Price#"
+StringIndex=<% $rowNumOne + 1 %>
+StringIndex2=1
+RegExpSubstitute=1
+Substitute=#Sub#
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+[MeterGame$0Title]
+Meter=String
+MeasureName=MeasureItem$0Title
+MeterStyle=StyleSmallText|sGameTitle
+LeftMouseUpAction=["[MeasureItem$0Link]"]
+RightMouseUpAction=!SetClip [MeasureItem$0Link]
+Group=Title
+
+[MeterGame$0Price]
+;Test of price and discount amount
+Meter=STRING
+MeterStyle=StyleSmallText|sGameDiscount
+MeasureName=MeasureItem$0Percent
+MeasureName2=MeasureItem$0Price
+
+
+[MeterDiscount$0Bar]
+;Visual Progress bar
+Meter=BAR
+MeasureName=Prc%0
+MeterStyle=sGamePercentBar
+
+
+
